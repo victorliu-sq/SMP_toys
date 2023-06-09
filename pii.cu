@@ -50,10 +50,19 @@ __global__ void parallel_iterative_improvement_algorithm_in_parallelism(unsigned
     }
 
     __syncthreads();
-    // initial match
-    if (tx == ty) {
-        int randomNumber = tx + curand_uniform(nodes[ty][tx]->state) * (N - tx); 
-        printf("Random number: %d in thread tx, ty: %d\n", randomNumber, tx);
+    // Constructing an Initial Matching
+    if (tx == ty && tx != N) {
+        int random_number = tx + curand_uniform(nodes[ty][tx]->state) * (N - tx); 
+        printf("Random number: %d in thread tx, ty: %d\n", random_number, tx);
+
+        // swap next pointer with tx, t_randomNumber / t_rx
+        int rx = random_number;
+        if (rx != tx) {
+            Node* temp_node = nodes[ty][tx]->next;
+            nodes[ty][tx]->next = nodes[ty][rx]->next;
+            nodes[ty][rx]->next = temp_node;
+            printf("node (ty: %d tx: %d)'s next node becomes (ty: %d tx: %d) whereas node (ty: %d rx: %d)'s next node becomes (ty: %d tx: %d)\n", ty, tx, nodes[ty][tx]->next->y, nodes[ty][tx]->next->x, ty, rx, nodes[ty][rx]->next->y, nodes[ty][rx]->next->x);
+        }
     }
 
     free(nodes[ty][tx]);
