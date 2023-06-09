@@ -52,7 +52,7 @@ __global__ void parallel_iterative_improvement_algorithm_in_parallelism(unsigned
     __syncthreads();
     // initial match
     if (tx == ty) {
-        int randomNumber = curand_uniform(nodes[ty][tx]->state) * 10; 
+        int randomNumber = tx + curand_uniform(nodes[ty][tx]->state) * (N - tx); 
         printf("Random number: %d in thread tx, ty: %d\n", randomNumber, tx);
     }
 
