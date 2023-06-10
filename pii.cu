@@ -84,7 +84,7 @@ __global__ void parallel_iterative_improvement_algorithm_in_parallelism(unsigned
         }
     }
     if (ty == 0) {
-        printf("thread %d %d's nx is %d\n", ty, tx, nodes[ty][tx]->nx);
+        printf("thread %d's nx is %d\n", tx, nodes[ty][tx]->nx);
     }
     free(nodes[ty][tx]);
 }
